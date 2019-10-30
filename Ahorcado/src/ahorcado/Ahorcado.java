@@ -99,7 +99,7 @@ public class Ahorcado {
 		System.out.println("Fallos:");
 		for (int i = 0; i<vFallos.length; i++) {
 			if (vFallos[i] != null) {
-				System.out.print(vFallos[i] + " ");
+				System.out.println(vFallos[i] + " ");
 			}
 		}
 	}
@@ -107,7 +107,23 @@ public class Ahorcado {
 	//Si se encuentra actualiza vHuecos
 	//Si fallo actualiza vFallos
 	public static void preguntarLetra(String vFallos[], String vHuecos[], String vSolucion[]) {
-		
+		Scanner leer = new Scanner(System.in);
+		String letra;
+		boolean acierto = false;
+		System.out.println("Pon una letra");
+		letra = leer.nextLine();
+		for(int i = 0; i<vSolucion.length; i++) {
+			if(vSolucion[i].equalsIgnoreCase(letra)) {
+				vHuecos[i] = vSolucion[i];
+				acierto = true;
+			}
+		}
+		for(int i = 0; i<vFallos.length; i++) {
+			if((!acierto) && (vFallos[i] == null)) {
+				vFallos[i] = letra;
+				break;
+			}
+		}
 	}
 	
 	public static void main(String[] args) {
