@@ -7,9 +7,41 @@ public class Ahorcado {
 	
 	//Método que comprueba que la partida se ha terminado
 	//O pierdo las vidas o gano la partida
-	public static boolean partidaTerminada() {
-		boolean terminado=false;
+	public static boolean partidaTerminada(String vFallos[], String vHuecos[]) {
+		boolean terminado=true;
 		
+		if(!(partidaPerdida(vFallos)||partidaGanada(vHuecos))) {
+			terminado = false;
+		}
+		
+		return terminado;
+	}
+	
+	public static boolean partidaPerdida(String vFallos[]) {
+		boolean terminado=true;
+		for(int j = 0; j<vFallos.length; j++) {
+			if(vFallos[j] == null) {
+				terminado = false;
+				break;
+			}
+		}
+		if(terminado) {
+			System.out.println("Has perdido");
+		}
+		return terminado;
+	}
+	
+	public static boolean partidaGanada(String vHuecos[]) {
+		boolean terminado=true;
+		for(int i = 0; i<vHuecos.length; i++) {
+			if(vHuecos[i].equalsIgnoreCase("_")) {
+				terminado=false;
+				break;
+			}
+		}
+		if(terminado) {
+			System.out.println("Has ganado");
+		}
 		return terminado;
 	}
 	
@@ -103,6 +135,7 @@ public class Ahorcado {
 			}
 		}
 	}
+	
 	//Pregunta la letra y actualiza los vectores
 	//Si se encuentra actualiza vHuecos
 	//Si fallo actualiza vFallos
@@ -110,6 +143,7 @@ public class Ahorcado {
 		Scanner leer = new Scanner(System.in);
 		String letra;
 		boolean acierto = false;
+		System.out.println(" ");
 		System.out.println("Pon una letra");
 		letra = leer.nextLine();
 		for(int i = 0; i<vSolucion.length; i++) {
@@ -139,7 +173,7 @@ public class Ahorcado {
 		do {
 			pintaMuñeco(vFallos, vHuecos);
 			preguntarLetra(vFallos, vHuecos, vSolucion);
-		}while(partidaTerminada());
+		}while(!partidaTerminada(vFallos, vHuecos));
 	}
 
 }
