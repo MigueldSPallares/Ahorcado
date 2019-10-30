@@ -1,5 +1,6 @@
 package ahorcado;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class Ahorcado {
@@ -8,12 +9,17 @@ public class Ahorcado {
 	//Método que comprueba que la partida se ha terminado
 	//O pierdo las vidas o gano la partida
 	public static boolean partidaTerminada(String vFallos[], String vHuecos[]) {
-		boolean terminado=true;
+		boolean terminado=false;
 		
-		if(!(partidaPerdida(vFallos)||partidaGanada(vHuecos))) {
-			terminado = false;
+		if(partidaPerdida(vFallos)) {
+			System.out.println("Has perdido");
+			terminado = true;
 		}
 		
+		if(partidaGanada(vHuecos)) {
+			System.out.println("Has ganado");
+			terminado = true;
+		}
 		return terminado;
 	}
 	
@@ -24,9 +30,6 @@ public class Ahorcado {
 				terminado = false;
 				break;
 			}
-		}
-		if(terminado) {
-			System.out.println("Has perdido");
 		}
 		return terminado;
 	}
@@ -39,9 +42,6 @@ public class Ahorcado {
 				break;
 			}
 		}
-		if(terminado) {
-			System.out.println("Has ganado");
-		}
 		return terminado;
 	}
 	
@@ -53,88 +53,6 @@ public class Ahorcado {
 		
 	}
 	
-	public static void pintaMuñeco(String vFallos[], String vHuecos[]) {
-		int fallos = 0;
-		
-		for (int i = 0; i<vFallos.length; i++) {
-			if (vFallos[i] != null) {
-				fallos = fallos + 1;
-			}
-		}
-		switch (fallos) {
-		case 1:
-			System.out.println("_________________");
-			break;
-		case 2:
-			System.out.println("|");
-			System.out.println("|");
-			System.out.println("|");
-			System.out.println("|");
-			System.out.println("|");
-			System.out.println("|");
-			System.out.println("|");
-			System.out.println("|_________________");
-			break;
-		case 3:
-			System.out.println("__________");
-			System.out.println("|");
-			System.out.println("|");
-			System.out.println("|");
-			System.out.println("|");
-			System.out.println("|");
-			System.out.println("|");
-			System.out.println("|");
-			System.out.println("|_________________");
-			break;
-		case 4:
-			System.out.println("__________");
-			System.out.println("|         |");
-			System.out.println("|         |");
-			System.out.println("|        <0>");
-			System.out.println("|");
-			System.out.println("|");
-			System.out.println("|");
-			System.out.println("|");
-			System.out.println("|_________________");
-			break;
-		case 5:
-			System.out.println("__________");
-			System.out.println("|         |");
-			System.out.println("|         |");
-			System.out.println("|        <0>");
-			System.out.println("|         |");
-			System.out.println("|         |");
-			System.out.println("|");
-			System.out.println("|");
-			System.out.println("|_________________");
-			break;
-		case 6:
-			System.out.println("__________");
-			System.out.println("|         |");
-			System.out.println("|         |");
-			System.out.println("|        <0>");
-			System.out.println("|        /|\\");
-			System.out.println("|         |");
-			System.out.println("|        / \\");
-			System.out.println("|");
-			System.out.println("|_________________");
-			break;
-		}
-		
-		System.out.println();
-		System.out.println();
-		for (int i = 0; i<vHuecos.length; i++) {
-			System.out.print(vHuecos[i] + " ");
-		}
-		
-		System.out.println();
-		System.out.println("Fallos:");
-		for (int i = 0; i<vFallos.length; i++) {
-			if (vFallos[i] != null) {
-				System.out.println(vFallos[i] + " ");
-			}
-		}
-	}
 	
 	//Pregunta la letra y actualiza los vectores
 	//Si se encuentra actualiza vHuecos
@@ -160,8 +78,16 @@ public class Ahorcado {
 		}
 	}
 	
+	public static String damePalabra() {
+		String[] vPalabras = {"Hola", "Juan", "Vaso", "Zapato", "Tienda"};
+		String palabra = "";
+		Random i = new Random();
+		palabra = vPalabras[i.nextInt(5)];
+		return palabra;
+	}
+	
 	public static void main(String[] args) {
-		String palabraSolucion = "HOLA";
+		String palabraSolucion = damePalabra();
 		String vFallos[], vSolucion[], vHuecos[];
 		
 		vFallos = new String[6];
@@ -171,8 +97,19 @@ public class Ahorcado {
 		inicializarVectores(vHuecos, vSolucion, palabraSolucion);
 		
 		do {
-			pintaMuñeco(vFallos, vHuecos);
+			System.out.println();
+			System.out.println();
+			for (int i = 0; i<vHuecos.length; i++) {
+				System.out.print(vHuecos[i] + " ");
+			}
 			preguntarLetra(vFallos, vHuecos, vSolucion);
+			Pintar.pintaMuñeco(vFallos, vHuecos);
+			if(partidaGanada(vHuecos)) {
+				for(int i=0; i<vHuecos.length; i++) {
+					System.out.print(vHuecos[i]);
+				}
+				System.out.println("");
+			}
 		}while(!partidaTerminada(vFallos, vHuecos));
 	}
 
